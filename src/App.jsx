@@ -1,25 +1,37 @@
-import { useState } from "react";
-import Modal from "./components/Modal/Modal";
+import Button from "./components/Button/Button";
+import MicrosoftLogo from "./assets/Microsoft-Logo";
+import Background from "./assets/Background";
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
-      >
-        Ouvrir la modal
-      </button>
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
+      <Background className="absolute inset-0 w-full h-full object-cover" />
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Titre de la Modal"
-      >
-        <p>Ceci est le contenu de la modal.</p>
-      </Modal>
+      <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
+        <span className="text-2xl font-semibold text-gray-900 mb-4 flex items-center justify-center gap-1">
+          <h2 className="text-customBlue">RH</h2>
+          <h2>Compagnon</h2>
+        </span>
+
+        <p className="mb-3 text-gray-700">
+          RH Compagnon simplifie la gestion des ressources humaines.
+          Recrutement, suivi des employés et automatisation des tâches : tout
+          est centralisé pour plus d’efficacité et de fluidité.
+        </p>
+
+        <Button variant="primary">
+          <p className="flex items-center justify-center gap-2">
+            <MicrosoftLogo width={24} height={24} />
+            Connectez-vous avec Google
+          </p>
+        </Button>
+
+        <div className="text-xs flex justify-center gap-1 mt-3 text-gray-300">
+          <p>Si vous êtes un employé Servier</p>
+          <p className="underline cursor-pointer">cliquez</p>
+          <p>ICI</p>
+        </div>
+      </div>
     </div>
   );
 };

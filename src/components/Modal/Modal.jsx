@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, title, children, showIcon }) => {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-md p-6 relative"
+        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-md p-6 relative z-50"
       >
         {showIcon && (
           <button
