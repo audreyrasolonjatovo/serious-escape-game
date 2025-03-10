@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 
-const Modal = ({ isOpen, onClose, title, children }) => {
+const Modal = ({ isOpen, onClose, title, children, showIcon }) => {
   if (!isOpen) return null;
 
   return (
@@ -13,12 +13,15 @@ const Modal = ({ isOpen, onClose, title, children }) => {
         transition={{ duration: 0.2 }}
         className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-md p-6 relative"
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-        >
-          <X size={24} />
-        </button>
+        {showIcon && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+          >
+            <X size={24} />
+          </button>
+        )}
+
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {title}
         </h2>
