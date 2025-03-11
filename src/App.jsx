@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import Button from "./components/Button/Button";
 import MicrosoftLogo from "./assets/Microsoft-Logo";
 import Background from "./assets/Background";
@@ -10,7 +12,7 @@ const App = () => {
       <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
         <span className="text-2xl font-semibold text-gray-900 mb-4 flex items-center justify-center gap-1">
           <h2 className="text-customBlue">RH</h2>
-          <h2>Compagnon</h2>
+          <h2 className="text-customOrange">Compagnon</h2>
         </span>
 
         <p className="mb-3 text-gray-700">
@@ -29,7 +31,9 @@ const App = () => {
         <div className="text-xs flex justify-center gap-1 mt-3 text-gray-300">
           <p>Si vous êtes un employé Servier</p>
           <p className="underline cursor-pointer">cliquez</p>
-          <p>ICI</p>
+          <Link to="/login" className="cursor-default">
+            ICI
+          </Link>
         </div>
       </div>
     </div>
