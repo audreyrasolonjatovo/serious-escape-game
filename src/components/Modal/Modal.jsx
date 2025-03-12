@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
+import { Expand } from "lucide-react";
 
 const Modal = ({ isOpen, onClose, title, children, showIcon }) => {
   if (!isOpen) return null;
@@ -20,9 +21,9 @@ const Modal = ({ isOpen, onClose, title, children, showIcon }) => {
         {showIcon && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+            className="absolute top-4 right-4 text-gray-500 hover:cursor-pointer"
           >
-            <X size={24} />
+            <Expand size={24} />
           </button>
         )}
 
