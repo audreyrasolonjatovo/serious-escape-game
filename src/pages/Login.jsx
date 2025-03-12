@@ -43,16 +43,16 @@ export default function Login() {
           <input
             type="text"
             placeholder="Choisissez un mot de passe"
-            className="w-full border"
+            className="w-full border p-2 rounded-md"
             required
           />
-          <div className="flex items-center justify-center">
-            <input type="text" required />
+          <div className="flex items-center justify-center w-full">
+            <input type="text" className="border p-2 rounded-md" />
             <p>@</p>
             <input
               type="text"
               placeholder="servier"
-              className="placeholder:text-black"
+              className="placeholder:text-black border p-2 rounded-md"
               required
             />
             <select name="org">
@@ -93,11 +93,11 @@ export default function Login() {
           <Button
             onClick={() => navigate("/")}
             variant="danger"
-            className="w-full"
+            addStyle="w-full"
           >
             Oui
           </Button>
-          <Button variant="success" onClick={closeModal} className="w-full">
+          <Button variant="success" onClick={closeModal} addStyle="w-full">
             Annuler
           </Button>
         </div>
