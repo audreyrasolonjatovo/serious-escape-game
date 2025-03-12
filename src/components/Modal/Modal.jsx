@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
 import { Expand } from "lucide-react";
 
 const Modal = ({ isOpen, onClose, title, children, showIcon }) => {

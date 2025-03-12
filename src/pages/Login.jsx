@@ -9,10 +9,6 @@ import Modal from "../components/Modal/Modal";
 export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  setIsExpanded((prev) => !prev);
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -21,31 +17,27 @@ export default function Login() {
     setIsModalOpen(false);
   };
 
-  const expandModal = () => {
-    console.log("test");
-  };
-
   const navigate = useNavigate();
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
       <Background className="absolute inset-0 w-full h-full object-cover" />
-      <div className="relative z-10 flex">
-        <div className="border h-8 w-8 rounded-full items-center justify-center flex">
+      <div className="relative z-10 flex gap-3 mb-5">
+        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
           1
         </div>
-        <div className="border h-8 w-8 rounded-full items-center justify-center flex">
+        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
           2
         </div>
-        <div className="border h-8 w-8 rounded-full items-center justify-center flex">
+        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
           3
         </div>
-        <div className="border h-8 w-8 rounded-full items-center justify-center flex">
+        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
           4
         </div>
       </div>
       <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
-        <p>1/4</p>
+        <p className="mb-10">1/4</p>
         <form action="">
           <input
             type="text"
@@ -97,8 +89,6 @@ export default function Login() {
         onClose={closeModal}
         title="Êtes-vous sûr de vouloir annuler ?"
         showIcon={true}
-        isExpanded={isExpanded}
-        onExpand={expandModal}
       >
         <div className="flex justify-between items-center gap-2 mt-4">
           <Button
