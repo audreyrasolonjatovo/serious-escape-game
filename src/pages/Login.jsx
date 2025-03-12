@@ -1,40 +1,41 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Background from "../assets/Background";
 import Button from "../components/Button/Button";
 import Modal from "../components/Modal/Modal";
 
 export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % 4);
+    }, 1000);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+    return () => clearInterval(interval);
+  }, []);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const navigate = useNavigate();
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
       <Background className="absolute inset-0 w-full h-full object-cover" />
-      <div className="relative z-10 flex gap-3 mb-5">
-        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
-          1
-        </div>
-        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
-          2
-        </div>
-        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
-          3
-        </div>
-        <div className="h-13 w-13 rounded-full items-center justify-center flex bg-customOrange text-white font-bold">
-          4
-        </div>
+      <div className="relative z-10 flex gap-7 mb-5">
+        {[0, 1, 2, 3].map((num, index) => (
+          <div
+            key={index}
+            className={`h-13 w-13 rounded-full flex items-center justify-center font-bold ${
+              index === activeIndex
+                ? "bg-white text-customOrange"
+                : "bg-customOrange  text-white"
+            }`}
+          >
+            {num + 1}
+          </div>
+        ))}
       </div>
       <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
         <p className="mb-10">1/4</p>
@@ -42,7 +43,6 @@ export default function Login() {
           <input
             type="text"
             placeholder="Choisissez un mot de passe"
-            tabIndex={-1}
             className="w-full border"
             required
           />
@@ -55,7 +55,7 @@ export default function Login() {
               className="placeholder:text-black"
               required
             />
-            <select name="org" id="">
+            <select name="org">
               <option value="">autre</option>
               <option value="png">.png</option>
               <option value="jpg">.jpg</option>
@@ -76,7 +76,6 @@ export default function Login() {
             >
               Annuler
             </Button>
-
             <Button variant="tertiary" type="reset">
               Effacer
             </Button>
