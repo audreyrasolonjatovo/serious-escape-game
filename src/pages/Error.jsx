@@ -22,7 +22,7 @@ export default function Error() {
         </p>
         <p>Essayez encore plus tard...</p>
         <div className="flex flex-col gap-2 mt-5">
-          <Button onClick={() => navigate("/notallowed")}>RESTER</Button>
+          <Button>RESTER</Button>
           <Link to="/" className="text-customBlue text-base">
             Page d'accueil
           </Link>
