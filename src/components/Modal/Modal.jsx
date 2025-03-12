@@ -5,13 +5,17 @@ const Modal = ({ isOpen, onClose, title, children, showIcon }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      onClick={onClose}
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
         className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-md p-6 relative z-50"
+        onClick={(e) => e.stopPropagation()}
       >
         {showIcon && (
           <button
