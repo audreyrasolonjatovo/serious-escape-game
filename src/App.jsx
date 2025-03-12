@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Button from "./components/Button/Button";
 import MicrosoftLogo from "./assets/Microsoft-Logo";
 import Background from "./assets/Background";
 
 const App = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
       <Background className="absolute inset-0 w-full h-full object-cover" />
@@ -21,7 +22,7 @@ const App = () => {
           est centralisé pour plus d’efficacité et de fluidité.
         </p>
 
-        <Button variant="primary">
+        <Button variant="primary" onClick={() => navigate("/notallowed")}>
           <p className="flex items-center justify-center gap-2">
             <MicrosoftLogo width={24} height={24} />
             Connectez-vous avec Google
