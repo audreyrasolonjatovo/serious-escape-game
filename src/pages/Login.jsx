@@ -12,6 +12,7 @@ export default function Login() {
   const [errors, setErrors] = useState([]);
   const [domain, setDomain] = useState(""); // pour l'input de domaine
   const [step, setStep] = useState(1); // Gérer les étapes (1, 2, 3, 4)
+  const [selectedImages, setSelectedImages] = useState([]); // pour les images sélectionnées
 
   const navigate = useNavigate();
 
@@ -56,11 +57,18 @@ export default function Login() {
     return newErrors;
   };
 
+  // Validation de l'étape 2 (Sélection des images)
+  const validateImagesSelection = () => {
+    if (selectedImages.length < 3) {
+      return "Veuillez sélectionner au moins 3 images de bonne ambiance de travail.";
+    }
+    return null;
+  };
+
   // Fonction pour avancer à l'étape suivante
   const handleNextStep = (e) => {
     e.preventDefault();
 
-    // Validation de l'étape 1 (Création de compte)
     if (step === 1) {
       const validationErrors = validatePassword();
       if (validationErrors.length > 0) {
@@ -70,14 +78,32 @@ export default function Login() {
       setErrors([]);
     }
 
-    // Passer à l'étape suivante
-    setStep(step + 1);
+    if (step === 2) {
+      const imageError = validateImagesSelection();
+      if (imageError) {
+        alert(imageError); // Affichage de l'erreur si les images ne sont pas validées
+        return;
+      }
+    }
+
+    setStep(step + 1); // Passer à l'étape suivante
   };
 
   const handlePrevStep = () => {
     if (step > 1) {
       setStep(step - 1);
     }
+  };
+
+  // Fonction pour gérer la sélection des images
+  const handleImageSelection = (image) => {
+    setSelectedImages((prev) => {
+      if (prev.includes(image)) {
+        return prev.filter((img) => img !== image); // Désélectionner l'image
+      } else {
+        return [...prev, image]; // Sélectionner l'image
+      }
+    });
   };
 
   return (
@@ -173,14 +199,43 @@ export default function Login() {
           </>
         )}
 
-        {/* Étape 2 : Captcha */}
+        {/* Étape 2 : Sélectionner des images */}
         {step === 2 && (
           <div>
-            <p>2/4 - Captcha : Vérifier que vous êtes un robot</p>
-            <div>
-              <input type="checkbox" id="captcha" className="form-checkbox" />
-              <label htmlFor="captcha">Vérifier que vous êtes un robot</label>
+            <p>
+              2/4 - Sélectionnez les images représentant une bonne ambiance de
+              travail
+            </p>
+            <div className="grid grid-cols-3 gap-4">
+              {/* Exemple d'images à sélectionner */}
+              {[
+                "image1.jpg",
+                "image2.jpg",
+                "image3.jpg",
+                "image4.jpg",
+                "image5.jpg"
+              ].map((image, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleImageSelection(image)}
+                  className={`cursor-pointer border p-2 ${
+                    selectedImages.includes(image)
+                      ? "bg-green-200"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  <img
+                    src={`path_to_images/${image}`}
+                    alt="image ambiance"
+                    className="w-full h-24 object-cover"
+                  />
+                  <p className="text-center">{`Image ${index + 1}`}</p>
+                </div>
+              ))}
             </div>
+            <Button variant="primary" onClick={handleNextStep}>
+              Suivant
+            </Button>
           </div>
         )}
 
@@ -239,18 +294,6 @@ export default function Login() {
           </Button>
         </div>
       </Modal>
-      {step === 1 && (
-        <div className="relative z-10 mt-5 text-[11px]">
-          <p>Votre mot de passe doit contenir au moins 10 caractères.</p>
-          <p>Votre mot de passe doit comporter au moins 1 lettre majuscule.</p>
-          <p>Votre mot de passe doit comporter au moins 1 chiffre.</p>
-          <p>
-            Votre mot de passe doit contenir au moins 1 lettre de votre adresse
-            e-mail.
-          </p>
-          <p>Votre mot de passe peut contenir un caractère cyrillique.</p>
-        </div>
-      )}
     </div>
   );
 }
