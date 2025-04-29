@@ -7,8 +7,8 @@ import Modal from "../components/Modal/Modal";
 export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("Choisissez un mot de passe");
+  const [email, setEmail] = useState("Votre adresse-mail");
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -85,7 +85,6 @@ export default function Login() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="Choisissez un mot de passe"
               className="w-full border p-2 rounded-md"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -97,7 +96,6 @@ export default function Login() {
             <input
               type="text"
               className="border p-2 rounded-md flex-1"
-              placeholder="Votre email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -106,6 +104,7 @@ export default function Login() {
               type="text"
               placeholder="servier"
               className="placeholder:text-black border p-2 rounded-md flex-1"
+              onChange={(e) => setDomain(e.target.value)}
               required
             />
             <select
@@ -123,11 +122,13 @@ export default function Login() {
               <option value="de">.de</option>
             </select>
           </div>
+
           {errors.length > 0 && (
             <div className="text-red-700 font-semibold text-sm mb-2">
               Le mot de passe ne respecte pas les conditions requises
             </div>
           )}
+
           <div className="mt-4 flex justify-between">
             <Button variant="tertiary" type="submit">
               Suivant
