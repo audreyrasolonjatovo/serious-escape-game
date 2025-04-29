@@ -181,9 +181,6 @@ export default function Login() {
               <input type="checkbox" id="captcha" className="form-checkbox" />
               <label htmlFor="captcha">Vérifier que vous êtes un robot</label>
             </div>
-            <Button variant="primary" onClick={handleNextStep}>
-              Suivant
-            </Button>
           </div>
         )}
 
@@ -192,9 +189,6 @@ export default function Login() {
           <div>
             <p>3/4 - Questionnaire : Sélectionnez vos qualités</p>
             {/* Ajouter le questionnaire ici */}
-            <Button variant="primary" onClick={handleNextStep}>
-              Suivant
-            </Button>
           </div>
         )}
 
@@ -245,16 +239,18 @@ export default function Login() {
           </Button>
         </div>
       </Modal>
-      <div className="relative z-10 mt-5 text-[11px]">
-        <p>Votre mot de passe doit contenir au moins 10 caractères.</p>
-        <p>Votre mot de passe doit comporter au moins 1 lettre majuscule.</p>
-        <p>Votre mot de passe doit comporter au moins 1 chiffre.</p>
-        <p>
-          Votre mot de passe doit contenir au moins 1 lettre de votre adresse
-          e-mail.
-        </p>
-        <p>Votre mot de passe peut contenir un caractère cyrillique.</p>
-      </div>
+      {step === 1 && (
+        <div className="relative z-10 mt-5 text-[11px]">
+          <p>Votre mot de passe doit contenir au moins 10 caractères.</p>
+          <p>Votre mot de passe doit comporter au moins 1 lettre majuscule.</p>
+          <p>Votre mot de passe doit comporter au moins 1 chiffre.</p>
+          <p>
+            Votre mot de passe doit contenir au moins 1 lettre de votre adresse
+            e-mail.
+          </p>
+          <p>Votre mot de passe peut contenir un caractère cyrillique.</p>
+        </div>
+      )}
     </div>
   );
 }
