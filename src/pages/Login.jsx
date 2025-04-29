@@ -37,25 +37,36 @@ export default function Login() {
           </div>
         ))}
       </div>
-      <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
+      <div className="relative z-10 bg-white rounded-2xl shadow-lg w-auto p-6">
         <p className="mb-10">1/4</p>
         <form action="">
-          <input
-            type="text"
-            placeholder="Choisissez un mot de passe"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-          <div className="flex items-center justify-center w-full">
-            <input type="text" className="border p-2 rounded-md" />
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Choisissez un mot de passe"
+              className="w-full border p-2 rounded-md"
+              required
+            />
+          </div>
+
+          <div className="flex items-center rounded-md w-full gap-2 mb-8">
+            <input
+              type="text"
+              className="border p-2 rounded-md flex-1"
+              placeholder="Votre email"
+            />
             <p>@</p>
             <input
               type="text"
               placeholder="servier"
-              className="placeholder:text-black border p-2 rounded-md"
+              className="placeholder:text-black border p-2 rounded-md flex-1"
               required
             />
-            <select name="org">
+            <select
+              name="org"
+              className="border p-2.5 rounded-md"
+              placeholder="org"
+            >
               <option value="">autre</option>
               <option value="png">.png</option>
               <option value="jpg">.jpg</option>
@@ -66,7 +77,7 @@ export default function Login() {
               <option value="de">.de</option>
             </select>
           </div>
-          <div>
+          <div className="mt-4 flex justify-between">
             <Button variant="tertiary">Suivant</Button>
             <Button
               onClick={(e) => {
@@ -81,6 +92,10 @@ export default function Login() {
             </Button>
           </div>
         </form>
+      </div>
+
+      <div className="relative z-10 border mt-5">
+        <p>coucou</p>
       </div>
 
       <Modal
