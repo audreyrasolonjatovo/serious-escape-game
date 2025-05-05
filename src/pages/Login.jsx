@@ -10,65 +10,48 @@ export default function Login() {
   const [password, setPassword] = useState("Choisissez un mot de passe");
   const [email, setEmail] = useState("Votre adresse-mail");
   const [errors, setErrors] = useState([]);
-  const [domain, setDomain] = useState(""); // pour l'input de domaine
-  const [step, setStep] = useState(1); // Gérer les étapes (1, 2, 3, 4)
-  const [selectedImages, setSelectedImages] = useState([]); // pour les images sélectionnées
-
+  const [domain, setDomain] = useState("");
+  const [step, setStep] = useState(1);
+  const [selectedImages, setSelectedImages] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Mise à jour automatique de l'index pour afficher les étapes
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % 4);
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // Validation du mot de passe
   const validatePassword = () => {
     const newErrors = [];
-
-    if (password.length < 10) {
+    if (password.length < 10)
       newErrors.push("Le mot de passe doit contenir au moins 10 caractères.");
-    }
-
-    if (!/[A-Z]/.test(password)) {
+    if (!/[A-Z]/.test(password))
       newErrors.push("Le mot de passe doit contenir au moins une majuscule.");
-    }
-
-    if (!/\d/.test(password)) {
+    if (!/\d/.test(password))
       newErrors.push("Le mot de passe doit contenir au moins un chiffre.");
-    }
-
     if (email) {
       const emailLetters = email.replace(/[^a-zA-Z]/g, "").split("");
       const containsEmailLetter = emailLetters.some((letter) =>
         password.includes(letter)
       );
-      if (!containsEmailLetter) {
+      if (!containsEmailLetter)
         newErrors.push("Le mot de passe doit contenir une lettre de l'e-mail.");
-      }
     }
-
     return newErrors;
   };
 
-  // Validation de l'étape 2 (Sélection des images)
   const validateImagesSelection = () => {
-    if (selectedImages.length < 3) {
+    if (selectedImages.length < 3)
       return "Veuillez sélectionner au moins 3 images de bonne ambiance de travail.";
-    }
     return null;
   };
 
-  // Fonction pour avancer à l'étape suivante
   const handleNextStep = (e) => {
     e.preventDefault();
-
     if (step === 1) {
       const validationErrors = validatePassword();
       if (validationErrors.length > 0) {
@@ -81,43 +64,46 @@ export default function Login() {
     if (step === 2) {
       const imageError = validateImagesSelection();
       if (imageError) {
-        alert(imageError); // Affichage de l'erreur si les images ne sont pas validées
+        alert(imageError);
         return;
       }
     }
 
-    setStep(step + 1); // Passer à l'étape suivante
+    setStep((prev) => prev + 1);
   };
 
   const handlePrevStep = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
+    if (step > 1) setStep((prev) => prev - 1);
   };
 
-  // Fonction pour gérer la sélection des images
   const handleImageSelection = (image) => {
-    setSelectedImages((prev) => {
-      if (prev.includes(image)) {
-        return prev.filter((img) => img !== image); // Désélectionner l'image
-      } else {
-        return [...prev, image]; // Sélectionner l'image
-      }
-    });
+    setSelectedImages((prev) =>
+      prev.includes(image)
+        ? prev.filter((img) => img !== image)
+        : [...prev, image]
+    );
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
-      <Background className="absolute inset-0 w-full h-full object-cover" />
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden bg-gradient-to-r from-blue-500 to-indigo-600">
+      <Background className="absolute inset-0 w-full h-full object-cover opacity-40" />
+
+      {/* Bouton d’annulation global */}
+      <button
+        onClick={openModal}
+        className="absolute top-6 right-6 text-sm text-white hover:underline"
+      >
+        Annuler l’inscription
+      </button>
 
       {/* Indicateur d'étapes */}
-      <div className="relative z-10 flex gap-7 mb-5">
+      <div className="relative z-10 flex gap-4 mb-6">
         {[0, 1, 2, 3].map((num, index) => (
           <div
             key={index}
-            className={`h-13 w-13 rounded-full flex items-center justify-center font-bold ${
+            className={`h-12 w-12 rounded-full flex items-center justify-center font-bold transition duration-300 ease-in-out ${
               index === activeIndex
-                ? "bg-white text-customOrange"
+                ? "bg-white text-customOrange transform scale-125"
                 : "bg-customOrange text-white"
             }`}
           >
@@ -126,26 +112,26 @@ export default function Login() {
         ))}
       </div>
 
-      {/* Contenu de l'étape */}
-      <div className="relative z-10 bg-white rounded-2xl shadow-lg w-auto p-6">
+      {/* Contenu principal */}
+      <div className="relative z-10 bg-white rounded-3xl shadow-xl p-8 w-full max-w-md mx-auto space-y-6">
+        {/* Étape 1 */}
         {step === 1 && (
           <>
-            <p className="mb-10">1/4 - Création de compte</p>
-            <form onSubmit={handleNextStep}>
-              <div className="mb-4">
+            <p className="text-2xl font-semibold text-gray-700">
+              1/4 - Création de compte
+            </p>
+            <form onSubmit={handleNextStep} className="space-y-6">
+              <input
+                type="text"
+                className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-customOrange"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="flex items-center gap-3 mb-4">
                 <input
                   type="text"
-                  className="w-full border p-2 rounded-md"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="flex items-center rounded-md w-full gap-2 mb-8">
-                <input
-                  type="text"
-                  className="border p-2 rounded-md flex-1"
+                  className="border p-3 rounded-lg flex-1"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -153,13 +139,13 @@ export default function Login() {
                 <input
                   type="text"
                   placeholder="servier"
-                  className="placeholder:text-black border p-2 rounded-md flex-1"
+                  className="border p-3 rounded-lg flex-1"
                   onChange={(e) => setDomain(e.target.value)}
                   required
                 />
                 <select
                   name="org"
-                  className="border p-2.5 rounded-md"
+                  className="border p-3 rounded-lg"
                   placeholder="org"
                 >
                   <option value="">autre</option>
@@ -174,40 +160,22 @@ export default function Login() {
               </div>
 
               {errors.length > 0 && (
-                <div className="text-red-700 font-semibold text-sm mb-2">
-                  Le mot de passe ne respecte pas les conditions requises
+                <div className="text-red-700 font-semibold text-sm mb-4">
+                  {errors.join(", ")}
                 </div>
               )}
-
-              <div className="mt-4 flex justify-between">
-                <Button variant="tertiary" type="submit">
-                  Suivant
-                </Button>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openModal();
-                  }}
-                >
-                  Annuler
-                </Button>
-                <Button variant="tertiary" type="reset">
-                  Effacer
-                </Button>
-              </div>
             </form>
           </>
         )}
 
-        {/* Étape 2 : Sélectionner des images */}
+        {/* Étape 2 */}
         {step === 2 && (
-          <div>
-            <p>
+          <div className="space-y-6">
+            <p className="text-2xl font-semibold text-gray-700">
               2/4 - Sélectionnez les images représentant une bonne ambiance de
               travail
             </p>
             <div className="grid grid-cols-3 gap-4">
-              {/* Exemple d'images à sélectionner */}
               {[
                 "image1.jpg",
                 "image2.jpg",
@@ -218,70 +186,61 @@ export default function Login() {
                 <div
                   key={index}
                   onClick={() => handleImageSelection(image)}
-                  className={`cursor-pointer border p-2 ${
+                  className={`cursor-pointer p-4 border-2 rounded-lg transition-all ${
                     selectedImages.includes(image)
-                      ? "bg-green-200"
-                      : "bg-gray-100"
+                      ? "bg-green-200 border-green-500"
+                      : "bg-gray-100 border-gray-300"
                   }`}
                 >
                   <img
                     src={`path_to_images/${image}`}
-                    alt="image ambiance"
-                    className="w-full h-24 object-cover"
+                    alt={`image ${index + 1}`}
+                    className="w-full h-24 object-cover rounded-lg"
                   />
-                  <p className="text-center">{`Image ${index + 1}`}</p>
+                  <p className="text-center mt-2 text-sm">{`Image ${
+                    index + 1
+                  }`}</p>
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Étape 3 & 4 (ajoute-les ici selon ta logique) */}
+
+        {/* Boutons navigation */}
+        <div className="mt-6 flex justify-between items-center">
+          {step > 1 ? (
+            <Button variant="secondary" onClick={handlePrevStep}>
+              Précédent
+            </Button>
+          ) : (
+            <div />
+          )}
+
+          {step < 4 ? (
             <Button variant="primary" onClick={handleNextStep}>
               Suivant
             </Button>
-          </div>
-        )}
-
-        {/* Étape 3 : Questionnaire */}
-        {step === 3 && (
-          <div>
-            <p>3/4 - Questionnaire : Sélectionnez vos qualités</p>
-            {/* Ajouter le questionnaire ici */}
-          </div>
-        )}
-
-        {/* Étape 4 : Validation */}
-        {step === 4 && (
-          <div>
-            <p>4/4 - Validation : Merci de valider !</p>
-            {/* Ajouter un bouton de finalisation ici */}
+          ) : (
             <Button
               variant="primary"
               onClick={() => alert("Inscription terminée")}
             >
               Terminer
             </Button>
-          </div>
-        )}
-
-        {/* Boutons Précédent et Suivant */}
-        {step > 1 && step < 4 && (
-          <div className="mt-4 flex justify-between">
-            <Button variant="secondary" onClick={handlePrevStep}>
-              Précédent
-            </Button>
-            <Button variant="primary" onClick={handleNextStep}>
-              Suivant
-            </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Modal de confirmation */}
+      {/* Modal confirmation */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         title="Êtes-vous sûr de vouloir annuler ?"
         showIcon={true}
       >
-        <div className="flex justify-between items-center gap-2 mt-4">
+        <div className="flex justify-between gap-4 mt-6">
           <Button
             onClick={() => navigate("/")}
             variant="danger"
@@ -290,7 +249,7 @@ export default function Login() {
             Oui
           </Button>
           <Button variant="success" onClick={closeModal} addStyle="w-full">
-            Annuler
+            Non
           </Button>
         </div>
       </Modal>
