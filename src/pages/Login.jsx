@@ -25,9 +25,10 @@ export default function Login() {
     { label: "Indépendant", checked: false },
     { label: "Sociable", checked: false },
     { label: "Sensible", checked: false },
+    { label: "Ennuyeux", checked: false },
     { label: "Optimiste", checked: false },
     { label: "Pessimiste", checked: false },
-    { label: "Réaliste", checked: false },
+    { label: "Aucun", checked: false },
     { label: "Pragmatique", checked: false },
     { label: "Rêveur", checked: false },
     { label: "Tout sélectionner", checked: false, isSelectAll: true },
@@ -186,7 +187,7 @@ export default function Login() {
         ))}
       </div>
 
-      <div className="relative z-10 bg-white rounded-3xl shadow-xl p-8 w-full max-w-md mx-auto space-y-6">
+      <div className="relative z-10 bg-white rounded-3xl shadow-xl p-8 w-full max-w-3xl mx-auto space-y-6">
         {step === 1 && (
           <>
             <p className="text-2xl font-semibold text-gray-700">
