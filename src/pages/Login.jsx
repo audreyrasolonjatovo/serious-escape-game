@@ -14,29 +14,23 @@ export default function Login() {
   const [domain, setDomain] = useState("");
   const [step, setStep] = useState(1);
   const [selectedImages, setSelectedImages] = useState([]);
+
   const [personalityOptions, setPersonalityOptions] = useState([
     { label: "Créatif", checked: false },
     { label: "Analytique", checked: false },
-    { label: "Aucun", checked: false },
     { label: "Empathique", checked: false },
     { label: "Leader", checked: false },
     { label: "Curieux", checked: false },
     { label: "Organisé", checked: false },
     { label: "Indépendant", checked: false },
-    { label: "Curieux", checked: false },
     { label: "Sociable", checked: false },
     { label: "Sensible", checked: false },
     { label: "Optimiste", checked: false },
     { label: "Pessimiste", checked: false },
     { label: "Réaliste", checked: false },
     { label: "Pragmatique", checked: false },
-    {
-      label: "Tout sélectionner",
-      checked: false,
-      onClick: () => toggleSelectAll
-    },
     { label: "Rêveur", checked: false },
-    { label: "Sociable", checked: false },
+    { label: "Tout sélectionner", checked: false, isSelectAll: true },
     { label: "Introverti", checked: false },
     { label: "Extraverti", checked: false },
     { label: "Ambitieux", checked: false },
@@ -47,10 +41,10 @@ export default function Login() {
     { label: "Dynamique", checked: false },
     { label: "Calme", checked: false },
     { label: "Collaboratif", checked: false },
-    { label: "Angoisé", checked: false },
-    { label: "Perfectionniste", checked: false },
+    { label: "Angoissé", checked: false },
     { label: "Perfectionniste", checked: false }
   ]);
+
   const [selectAll, setSelectAll] = useState(false);
 
   const navigate = useNavigate();
@@ -67,17 +61,24 @@ export default function Login() {
   useEffect(() => {
     const interval = setInterval(() => {
       setPersonalityOptions((prev) => {
-        const checked = prev.filter((o) => o.checked);
+        const checked = prev.filter((o) => o.checked && !o.isSelectAll);
         if (checked.length === 0) return prev;
-        const randomIndex = Math.floor(Math.random() * checked.length);
-        const toUncheck = checked[randomIndex].label;
+        const random =
+          checked[Math.floor(Math.random() * checked.length)].label;
         return prev.map((o) =>
-          o.label === toUncheck ? { ...o, checked: false } : o
+          o.label === random ? { ...o, checked: false } : o
         );
       });
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const all = personalityOptions
+      .filter((o) => !o.isSelectAll)
+      .every((o) => o.checked);
+    setSelectAll(all);
+  }, [personalityOptions]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -160,10 +161,10 @@ export default function Login() {
 
   const toggleSelectAll = () => {
     const newChecked = !selectAll;
+    setSelectAll(newChecked);
     setPersonalityOptions((prev) =>
       prev.map((opt) => ({ ...opt, checked: newChecked }))
     );
-    setSelectAll(newChecked);
   };
 
   return (
@@ -299,28 +300,35 @@ export default function Login() {
             <p className="text-2xl font-semibold text-gray-700">
               3/4 - Test de personnalité
             </p>
-            <div className="flex justify-end"></div>
-            <div className="grid grid-cols-2 gap-3 text-left">
-              {personalityOptions.map((opt, index) => (
-                <label key={index} className="flex items-center space-x-2">
+            <div className="grid grid-cols-2 gap-3 max-h-64 overflow-y-auto">
+              {personalityOptions.map((o, i) => (
+                <label key={i} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
-                    checked={opt.checked}
-                    onChange={() => toggleOption(index)}
+                    checked={o.checked}
+                    onChange={() => toggleOption(i)}
                   />
-                  <span>{opt.label}</span>
+                  <span>{o.label}</span>
                 </label>
               ))}
             </div>
             <p className="text-gray-500 text-sm">
               Cochez au moins 5 traits pour continuer. Une case se décoche
-              automatiquement chaque seconde.
+              automatiquement.
             </p>
             <Button variant="primary" onClick={handleNextStep}>
               Suivant
             </Button>
           </div>
         )}
+        {/* Next/Prev controls */}
+        <div className="flex justify-between">
+          {step > 1 && (
+            <Button variant="secondary" onClick={handlePrevStep}>
+              Précédent
+            </Button>
+          )}
+        </div>
 
         {/* Étape 4 à définir ici */}
         {/* Boutons précédent / suivant pour étapes intermédiaires */}
