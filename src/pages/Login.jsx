@@ -1,3 +1,4 @@
+// ... importations inchangées
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Background from "../assets/Background";
@@ -13,11 +14,67 @@ export default function Login() {
   const [domain, setDomain] = useState("");
   const [step, setStep] = useState(1);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [personalityOptions, setPersonalityOptions] = useState([
+    { label: "Créatif", checked: false },
+    { label: "Analytique", checked: false },
+    { label: "Aucun", checked: false },
+    { label: "Empathique", checked: false },
+    { label: "Leader", checked: false },
+    { label: "Curieux", checked: false },
+    { label: "Organisé", checked: false },
+    { label: "Indépendant", checked: false },
+    { label: "Curieux", checked: false },
+    { label: "Sociable", checked: false },
+    { label: "Sensible", checked: false },
+    { label: "Optimiste", checked: false },
+    { label: "Pessimiste", checked: false },
+    { label: "Réaliste", checked: false },
+    { label: "Pragmatique", checked: false },
+    {
+      label: "Tout sélectionner",
+      checked: false,
+      onClick: () => toggleSelectAll
+    },
+    { label: "Rêveur", checked: false },
+    { label: "Sociable", checked: false },
+    { label: "Introverti", checked: false },
+    { label: "Extraverti", checked: false },
+    { label: "Ambitieux", checked: false },
+    { label: "Confiant", checked: false },
+    { label: "Timide", checked: false },
+    { label: "Aventurier", checked: false },
+    { label: "Prudent", checked: false },
+    { label: "Dynamique", checked: false },
+    { label: "Calme", checked: false },
+    { label: "Collaboratif", checked: false },
+    { label: "Angoisé", checked: false },
+    { label: "Perfectionniste", checked: false },
+    { label: "Perfectionniste", checked: false }
+  ]);
+  const [selectAll, setSelectAll] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % 4);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Décochage automatique aléatoire
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPersonalityOptions((prev) => {
+        const checked = prev.filter((o) => o.checked);
+        if (checked.length === 0) return prev;
+        const randomIndex = Math.floor(Math.random() * checked.length);
+        const toUncheck = checked[randomIndex].label;
+        return prev.map((o) =>
+          o.label === toUncheck ? { ...o, checked: false } : o
+        );
+      });
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -51,7 +108,8 @@ export default function Login() {
   };
 
   const handleNextStep = (e) => {
-    e.preventDefault();
+    e?.preventDefault?.();
+
     if (step === 1) {
       const validationErrors = validatePassword();
       if (validationErrors.length > 0) {
@@ -69,11 +127,19 @@ export default function Login() {
       }
     }
 
-    setStep((prev) => prev + 1);
+    if (step === 3) {
+      const checkedCount = personalityOptions.filter((o) => o.checked).length;
+      if (checkedCount < 5) {
+        alert("Veuillez cocher au moins 5 traits de personnalité.");
+        return;
+      }
+    }
+
+    setStep(step + 1);
   };
 
   const handlePrevStep = () => {
-    if (step > 1) setStep((prev) => prev - 1);
+    if (step > 1) setStep(step - 1);
   };
 
   const handleImageSelection = (image) => {
@@ -84,19 +150,26 @@ export default function Login() {
     );
   };
 
+  const toggleOption = (index) => {
+    setPersonalityOptions((prev) =>
+      prev.map((opt, i) =>
+        i === index ? { ...opt, checked: !opt.checked } : opt
+      )
+    );
+  };
+
+  const toggleSelectAll = () => {
+    const newChecked = !selectAll;
+    setPersonalityOptions((prev) =>
+      prev.map((opt) => ({ ...opt, checked: newChecked }))
+    );
+    setSelectAll(newChecked);
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden bg-gradient-to-r from-blue-500 to-indigo-600">
       <Background className="absolute inset-0 w-full h-full object-cover opacity-40" />
 
-      {/* Bouton d’annulation global */}
-      <button
-        onClick={openModal}
-        className="absolute top-6 right-6 text-sm text-white hover:underline"
-      >
-        Annuler l’inscription
-      </button>
-
-      {/* Indicateur d'étapes */}
       <div className="relative z-10 flex gap-4 mb-6">
         {[0, 1, 2, 3].map((num, index) => (
           <div
@@ -112,22 +185,22 @@ export default function Login() {
         ))}
       </div>
 
-      {/* Contenu principal */}
       <div className="relative z-10 bg-white rounded-3xl shadow-xl p-8 w-full max-w-md mx-auto space-y-6">
-        {/* Étape 1 */}
         {step === 1 && (
           <>
             <p className="text-2xl font-semibold text-gray-700">
               1/4 - Création de compte
             </p>
             <form onSubmit={handleNextStep} className="space-y-6">
-              <input
-                type="text"
-                className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-customOrange"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div>
+                <input
+                  type="text"
+                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-customOrange"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
               <div className="flex items-center gap-3 mb-4">
                 <input
                   type="text"
@@ -143,11 +216,7 @@ export default function Login() {
                   onChange={(e) => setDomain(e.target.value)}
                   required
                 />
-                <select
-                  name="org"
-                  className="border p-3 rounded-lg"
-                  placeholder="org"
-                >
+                <select className="border p-3 rounded-lg">
                   <option value="">autre</option>
                   <option value="png">.png</option>
                   <option value="jpg">.jpg</option>
@@ -164,11 +233,27 @@ export default function Login() {
                   {errors.join(", ")}
                 </div>
               )}
+
+              <div className="flex justify-between items-center">
+                <Button variant="tertiary" type="submit">
+                  Suivant
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal();
+                  }}
+                >
+                  Annuler
+                </Button>
+                <Button variant="tertiary" type="reset">
+                  Effacer
+                </Button>
+              </div>
             </form>
           </>
         )}
 
-        {/* Étape 2 */}
         {step === 2 && (
           <div className="space-y-6">
             <p className="text-2xl font-semibold text-gray-700">
@@ -203,37 +288,51 @@ export default function Login() {
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Étape 3 & 4 (ajoute-les ici selon ta logique) */}
-
-        {/* Boutons navigation */}
-        <div className="mt-6 flex justify-between items-center">
-          {step > 1 ? (
-            <Button variant="secondary" onClick={handlePrevStep}>
-              Précédent
-            </Button>
-          ) : (
-            <div />
-          )}
-
-          {step < 4 ? (
             <Button variant="primary" onClick={handleNextStep}>
               Suivant
             </Button>
-          ) : (
-            <Button
-              variant="primary"
-              onClick={() => alert("Inscription terminée")}
-            >
-              Terminer
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-6">
+            <p className="text-2xl font-semibold text-gray-700">
+              3/4 - Test de personnalité
+            </p>
+            <div className="flex justify-end"></div>
+            <div className="grid grid-cols-2 gap-3 text-left">
+              {personalityOptions.map((opt, index) => (
+                <label key={index} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={opt.checked}
+                    onChange={() => toggleOption(index)}
+                  />
+                  <span>{opt.label}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-gray-500 text-sm">
+              Cochez au moins 5 traits pour continuer. Une case se décoche
+              automatiquement chaque seconde.
+            </p>
+            <Button variant="primary" onClick={handleNextStep}>
+              Suivant
             </Button>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Étape 4 à définir ici */}
+        {/* Boutons précédent / suivant pour étapes intermédiaires */}
+        {step > 1 && step < 4 && (
+          <div className="mt-4 flex justify-between">
+            <Button variant="secondary" onClick={handlePrevStep}>
+              Précédent
+            </Button>
+          </div>
+        )}
       </div>
 
-      {/* Modal confirmation */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -249,7 +348,7 @@ export default function Login() {
             Oui
           </Button>
           <Button variant="success" onClick={closeModal} addStyle="w-full">
-            Non
+            Annuler
           </Button>
         </div>
       </Modal>
