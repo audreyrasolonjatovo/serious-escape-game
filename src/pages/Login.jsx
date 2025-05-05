@@ -314,22 +314,13 @@ export default function Login() {
               ))}
             </div>
             <p className="text-gray-500 text-sm">
-              Cochez au moins 5 traits pour continuer. Une case se décoche
-              automatiquement.
+              Cochez au moins 5 traits qui vous ressemblent afin de continuer.
             </p>
             <Button variant="primary" onClick={handleNextStep}>
               Suivant
             </Button>
           </div>
         )}
-        {/* Next/Prev controls */}
-        <div className="flex justify-between">
-          {step > 1 && (
-            <Button variant="secondary" onClick={handlePrevStep}>
-              Précédent
-            </Button>
-          )}
-        </div>
 
         {/* Étape 4 à définir ici */}
         {/* Boutons précédent / suivant pour étapes intermédiaires */}
