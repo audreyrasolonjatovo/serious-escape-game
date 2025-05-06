@@ -62,15 +62,24 @@ export default function Login() {
   useEffect(() => {
     const interval = setInterval(() => {
       setPersonalityOptions((prev) => {
-        const checked = prev.filter((o) => o.checked && !o.isSelectAll);
+        // Désactive si "Tout sélectionner" est coché
+        const isAllSelected = prev.find((o) => o.isSelectAll)?.checked;
+        if (isAllSelected) return prev;
+
+        const checked = prev.filter(
+          (o) => o.checked && !o.isSelectAll && o.label !== "Aucun"
+        );
         if (checked.length === 0) return prev;
+
         const random =
           checked[Math.floor(Math.random() * checked.length)].label;
+
         return prev.map((o) =>
           o.label === random ? { ...o, checked: false } : o
         );
       });
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -153,19 +162,46 @@ export default function Login() {
   };
 
   const toggleOption = (index) => {
-    setPersonalityOptions((prev) =>
-      prev.map((opt, i) =>
-        i === index ? { ...opt, checked: !opt.checked } : opt
-      )
-    );
-  };
+    setPersonalityOptions((prev) => {
+      const clicked = prev[index];
 
-  const toggleSelectAll = () => {
-    const newChecked = !selectAll;
-    setSelectAll(newChecked);
-    setPersonalityOptions((prev) =>
-      prev.map((opt) => ({ ...opt, checked: newChecked }))
-    );
+      // Si l'utilisateur clique sur "Aucun"
+      if (clicked.label === "Aucun") {
+        return prev.map((opt) =>
+          opt.label === "Aucun"
+            ? { ...opt, checked: !opt.checked }
+            : { ...opt, checked: false }
+        );
+      }
+
+      // Si l'utilisateur clique sur "Tout sélectionner"
+      if (clicked.isSelectAll) {
+        const newChecked = !clicked.checked;
+        return prev.map((opt) =>
+          opt.isSelectAll
+            ? { ...opt, checked: newChecked }
+            : { ...opt, checked: newChecked }
+        );
+      }
+
+      // Sinon, toggle normal + gestion des cas spéciaux
+      const updated = prev.map((opt, i) =>
+        i === index ? { ...opt, checked: !opt.checked } : opt
+      );
+
+      // Si l'utilisateur coche un autre trait alors qu'"Aucun" est coché, on décoche "Aucun"
+      const updatedWithoutAucun = updated.map((opt) =>
+        opt.label === "Aucun" ? { ...opt, checked: false } : opt
+      );
+
+      const allChecked = updatedWithoutAucun
+        .filter((opt) => !opt.isSelectAll && opt.label !== "Aucun")
+        .every((opt) => opt.checked);
+
+      return updatedWithoutAucun.map((opt) =>
+        opt.isSelectAll ? { ...opt, checked: allChecked } : opt
+      );
+    });
   };
 
   return (
@@ -264,7 +300,7 @@ export default function Login() {
             </p>
             <div className="grid grid-cols-3 gap-4">
               {[
-                "image1.jpg",
+                "https://img.freepik.com/photos-gratuite/gros-plan-gens-heureux-au-travail_23-2149008940.jpg?t=st=1746439751~exp=1746443351~hmac=06b2a5175c1ffccad28b70bb47d0ea695a821217d9357e542a86880464314a90&w=2000",
                 "image2.jpg",
                 "image3.jpg",
                 "image4.jpg",
