@@ -83,7 +83,7 @@ export default function Step3() {
       Math.abs(honestyNum - sliderNum) > tolerance
     ) {
       setError(
-        `⚠️ La valeur d'honnêteté "Sur 100" doit être proche de la position du slider (±${tolerance}).`
+        `⚠️ Vos valeurs d'honnêteté ne correpondent pas, encore un mensonge ...`
       );
       return false;
     }
@@ -178,10 +178,13 @@ export default function Step3() {
                 id="honestyInput"
                 min={0}
                 max={100}
+                step={1}
                 value={honestyInput}
                 onChange={(e) => setHonestyInput(e.target.value)}
+                onKeyDown={(e) => e.preventDefault()} // empêche la frappe clavier
+                onPaste={(e) => e.preventDefault()} // empêche le copier/coller
+                onDrop={(e) => e.preventDefault()} // empêche le glisser-déposer
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-customOrange"
-                placeholder="Entrez un nombre entre 0 et 100"
               />
             </div>
           )}
