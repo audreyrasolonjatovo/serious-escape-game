@@ -2,6 +2,7 @@ import Background from "../assets/Background";
 import StepIndicator from "./StepIndicator";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
+import Step3 from "./Step3";
 
 export default function Login() {
   return (
@@ -11,7 +12,7 @@ export default function Login() {
         <div className="mb-6 flex justify-center">
           <StepIndicator />
         </div>
-        <Step2 />
+        <Step3 />
       </div>
     </div>
   );
