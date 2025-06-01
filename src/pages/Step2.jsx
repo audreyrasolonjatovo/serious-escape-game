@@ -29,7 +29,10 @@ export default function Step2() {
     "Déterminé",
     "Flexible",
     "Exigeant",
-    "Inventif"
+    "Inventif",
+    "Patient",
+    "Souriant",
+    "Beau"
   ];
 
   // On coche tout au départ
