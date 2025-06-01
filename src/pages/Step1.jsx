@@ -87,7 +87,7 @@ export default function Step1() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Choisissez un mot de passe"
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customOrange"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customOrange text-gray-400"
       />
 
       {/* Email */}
@@ -97,7 +97,7 @@ export default function Step1() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customOrange"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customOrange text-gray-400"
         />
         <span className="px-3 text-gray-500 select-none">@</span>
         <input
