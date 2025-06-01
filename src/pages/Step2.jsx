@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Step2() {
+export default function Step2({ onNext, onBack }) {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedQualities, setSelectedQualities] = useState([]);
@@ -71,11 +71,11 @@ export default function Step2() {
       setError("🎯 Vous devez conserver exactement 5 qualités.");
       return;
     }
-    alert("✅ Étape 2 validée !");
+    onNext();
   };
 
   const handleBack = () => {
-    alert("↩️ Retour à l’étape précédente.");
+    onBack();
   };
 
   const displayedImage = image ? URL.createObjectURL(image) : DEFAULT_IMAGE;
@@ -164,14 +164,14 @@ export default function Step2() {
           onClick={handleBack}
           className="text-gray-500 hover:underline"
         >
-          ← Retour
+          Retour
         </button>
         <button
           type="button"
           onClick={handleNext}
           className="bg-customOrange hover:bg-orange-600 text-white px-5 py-2 rounded-md"
         >
-          Suivant →
+          Suivant
         </button>
       </div>
     </div>

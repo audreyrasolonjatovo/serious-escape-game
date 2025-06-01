@@ -137,7 +137,7 @@ export default function Step1({ onNext }) {
       <div className="flex justify-center gap-8 mt-8">
         <button
           type="button"
-          onClick={() => validateForm(false)}
+          onClick={() => validateForm(true)}
           className="text-gray-400 cursor-pointer"
         >
           Valider

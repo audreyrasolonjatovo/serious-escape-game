@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Step3() {
+export default function Step3({ onNext, onBack }) {
   const QUESTIONS = [
     {
       id: "q1",
@@ -123,11 +123,12 @@ export default function Step3() {
       alert(
         `✅ Étape 3 validée !\n\nVotre honnêteté auto-évaluée : ${sliderValue}`
       );
+      onNext();
     }
   }
 
   function handleBack() {
-    alert("↩️ Retour à l’étape précédente.");
+    onBack();
   }
 
   return (
