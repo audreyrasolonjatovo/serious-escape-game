@@ -1,20 +1,15 @@
 import { useState } from "react";
 
-export default function Step1() {
+export default function Step1({ onNext }) {
   const [password, setPassword] = useState("Choisissez un mot de passe");
   const [email, setEmail] = useState("");
   const [checkboxChecked, setCheckboxChecked] = useState(true);
   const [domain, setDomain] = useState("servier");
   const [error, setError] = useState("");
 
-  function containsCyrillic(str) {
-    return /[\u0400-\u04FF]/.test(str);
-  }
-
-  function validateForm() {
+  function validateForm(proceed = false) {
     setError("");
 
-    // 1. Case refus cochée
     if (checkboxChecked) {
       setError(
         "Merci de lire les conditions : vous ne pouvez pas les refuser."
@@ -22,13 +17,11 @@ export default function Step1() {
       return;
     }
 
-    // 2. Domaine imposé
     if (domain.toLowerCase() !== "servier") {
       setError("Le domaine est requis pour accéder à la plateforme sécurisée.");
       return;
     }
 
-    // 3. Fournisseur email bloqué
     if (email.match(/@(gmail|hotmail)\./i)) {
       setError(
         "Les adresses Gmail ou Hotmail ne sont pas compatibles avec notre système."
@@ -36,19 +29,16 @@ export default function Step1() {
       return;
     }
 
-    // 5. Mot de passe : au moins 10 caractères
     if (password.length < 10) {
       setError("Votre mot de passe doit contenir au moins 10 caractères.");
       return;
     }
 
-    // 6. Mot de passe : au moins 1 chiffre
     if (!/\d/.test(password)) {
       setError("Le mot de passe doit contenir au moins un chiffre.");
       return;
     }
 
-    // 7. Mot de passe : au moins 2 lettres communes avec email
     const emailLetters = email.replace(/[^a-zA-Z]/g, "").toLowerCase();
     const passwordLetters = password.toLowerCase();
     let commonLetters = 0;
@@ -67,14 +57,9 @@ export default function Step1() {
       return;
     }
 
-    // 8. Bonus : encourage à utiliser le cyrillique (facultatif)
-    if (!containsCyrillic(password)) {
-      alert(
-        "⚠️ Conseil sécurité : ajoutez un caractère cyrillique pour renforcer votre mot de passe."
-      );
+    if (proceed) {
+      onNext();
     }
-
-    alert("✅ Formulaire validé ! Vous avez passé l'étape avec succès.");
   }
 
   return (
@@ -150,12 +135,9 @@ export default function Step1() {
 
       {/* Boutons */}
       <div className="flex justify-center gap-8 mt-8">
-        {/* ✅ Vrai bouton à gauche */}
-
-        {/* Faux boutons à droite */}
         <button
           type="button"
-          onClick={validateForm}
+          onClick={() => validateForm(false)}
           className="text-gray-400 cursor-pointer"
         >
           Valider
