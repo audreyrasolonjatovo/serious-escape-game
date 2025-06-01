@@ -109,7 +109,7 @@ export default function Step3({ onNext, onBack }) {
     // Validation slider : s'assurer qu'il a été relâché au moins une fois
     if (!sliderReleased) {
       setError(
-        "🎛️ N'oubliez pas d'ajuster et relâcher le curseur pour continuer."
+        "N'oubliez pas d'ajuster et relâcher le curseur pour continuer."
       );
       return false;
     }
@@ -120,9 +120,6 @@ export default function Step3({ onNext, onBack }) {
   function handleNext() {
     if (validate()) {
       setProgress(100);
-      alert(
-        `✅ Étape 3 validée !\n\nVotre honnêteté auto-évaluée : ${sliderValue}`
-      );
       onNext();
     }
   }
@@ -222,7 +219,7 @@ export default function Step3({ onNext, onBack }) {
         {sliderReleased && sliderValue < 100 && (
           <p className="mt-1 text-sm text-gray-600 select-none italic">
             {sliderValue} ??? 😏 J’espère que vous n’avez pas choisi "honnêteté"
-            à la question précédente !
+            comme qualité !
           </p>
         )}
       </div>

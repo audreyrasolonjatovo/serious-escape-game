@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function Step1({ onNext }) {
   const [password, setPassword] = useState("Choisissez un mot de passe");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("Votre adresse mail");
   const [checkboxChecked, setCheckboxChecked] = useState(true);
   const [domain, setDomain] = useState("servier");
   const [error, setError] = useState("");

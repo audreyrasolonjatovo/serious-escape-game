@@ -45,7 +45,7 @@ export default function Step4() {
       </p>
 
       <p className="mt-4 font-semibold">
-        🎧 Sélectionnez toutes les images du mot que vous entendez.
+        Sélectionnez toutes les images du mot que vous entendez.
       </p>
 
       {/* Bouton audio */}
