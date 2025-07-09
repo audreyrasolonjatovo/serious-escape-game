@@ -1,5 +1,6 @@
 {
   "name": "serious-escape-game",
+  "homepage": "https://audreyrasolonjatovo.github.io/utilisabilite/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "tailwind:init": "npx tailwindcss init",
-    "predeploy": "npm run build",
+    "predeploy": "pnpm run build",
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
