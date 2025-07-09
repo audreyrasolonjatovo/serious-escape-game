@@ -9,8 +9,8 @@ export default function Step3({ onNext, onBack }) {
         "Je fais les tâches les plus urgentes d’abord",
         "Je commence par ce qui me motive le plus",
         "Je délègue dès que possible",
-        "Je préfère ne pas répondre"
-      ]
+        "Je préfère ne pas répondre",
+      ],
     },
     {
       id: "q2",
@@ -19,8 +19,8 @@ export default function Step3({ onNext, onBack }) {
         "J'écoute avant de parler",
         "Je prends naturellement la parole",
         "Je me concentre sur la prise de notes",
-        "Je préfère ne pas répondre"
-      ]
+        "Je préfère ne pas répondre",
+      ],
     },
     {
       id: "q3",
@@ -29,28 +29,29 @@ export default function Step3({ onNext, onBack }) {
         "Tôt le matin",
         "En pleine nuit",
         "Juste avant la deadline",
-        "Je préfère ne pas répondre"
-      ]
-    }
+        "Je préfère ne pas répondre",
+      ],
+    },
   ];
 
   const [answers, setAnswers] = useState({
     q1: "",
     q2: "",
-    q3: ""
+    q3: "",
   });
 
-  const [honestyInput, setHonestyInput] = useState(""); // input numérique dans question 2
+  const [honestyInput, setHonestyInput] = useState(""); // input numérique (pas de max)
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
   const [fastClicked, setFastClicked] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [progress, setProgress] = useState(0);
 
-  // Slider state
+  // Slider state : peut dépasser 100 jusqu'à 200
   const [sliderValue, setSliderValue] = useState(50);
   const [sliderReleased, setSliderReleased] = useState(false);
 
+  // Timer progress bar
   useEffect(() => {
     if (progress < 99) {
       const timer = setTimeout(() => setProgress(progress + 1), 50);
@@ -66,29 +67,36 @@ export default function Step3({ onNext, onBack }) {
     setError("");
     setFastClicked(false);
 
-    // Vérifier que toutes les questions sont répondues
+    // Toutes les questions doivent être répondues
     if (Object.values(answers).some((a) => a === "")) {
       setError("📝 Veuillez répondre à toutes les questions.");
       return false;
     }
 
-    // Validation du champ honnêteté dans question 2
+    // Validation input honnêteté numérique
     const honestyNum = Number(honestyInput);
     const sliderNum = Number(sliderValue);
     const tolerance = 5;
-    if (
-      isNaN(honestyNum) ||
-      honestyNum < 0 ||
-      honestyNum > 100 ||
-      Math.abs(honestyNum - sliderNum) > tolerance
-    ) {
+
+    if (isNaN(honestyNum) || honestyNum < 0) {
+      setError("⚠️ Veuillez saisir un nombre valide pour l’honnêteté.");
+      return false;
+    }
+
+    if (honestyNum > 100) {
+      setError("🤥 Personne n’est honnête à plus de 100%. Soyez raisonnable.");
+      return false;
+    }
+
+    // Correspondance input numérique vs slider (tolérance)
+    if (Math.abs(honestyNum - Math.min(sliderNum, 100)) > tolerance) {
       setError(
-        `⚠️ Vos valeurs d'honnêteté ne correpondent pas, encore un mensonge ...`
+        `⚠️ Vos valeurs d'honnêteté ne correspondent pas, encore un mensonge ...`
       );
       return false;
     }
 
-    // Validation du commentaire : présenté comme optionnel, mais obligatoire en réalité
+    // Commentaire obligatoire (même si présenté optionnel)
     if (comment.trim() === "") {
       setError(
         "✍️ Le commentaire est indiqué comme optionnel, mais nous insistons pour que vous laissiez un petit feedback avant de continuer."
@@ -96,7 +104,7 @@ export default function Step3({ onNext, onBack }) {
       return false;
     }
 
-    // Conseil UX si trop rapide
+    // UX tip si trop rapide
     const elapsedSeconds = (Date.now() - startTime) / 1000;
     if (elapsedSeconds < 10 && comment.trim() === "") {
       setFastClicked(true);
@@ -106,7 +114,7 @@ export default function Step3({ onNext, onBack }) {
       return false;
     }
 
-    // Validation slider : s'assurer qu'il a été relâché au moins une fois
+    // Slider doit être relâché au moins une fois
     if (!sliderReleased) {
       setError(
         "N'oubliez pas d'ajuster et relâcher le curseur pour continuer."
@@ -126,6 +134,24 @@ export default function Step3({ onNext, onBack }) {
 
   function handleBack() {
     onBack();
+  }
+
+  // Gère le slider : visuellement limité à 100 mais peut dépasser 200 en interne
+  function handleSliderChange(e) {
+    const val = Number(e.target.value);
+    if (val >= 100 && sliderValue < 100) {
+      // Si on atteint 100 depuis en dessous, commencer à incrémenter au mousemove
+      setSliderValue(100);
+    } else if (val < 100) {
+      setSliderValue(val);
+    }
+  }
+
+  // Pendant drag, simule dépassement si on continue de déplacer
+  function handleMouseMove(e) {
+    if (e.buttons === 1 && sliderValue >= 100 && sliderValue < 200) {
+      setSliderValue((v) => Math.min(200, v + 1));
+    }
   }
 
   return (
@@ -175,22 +201,26 @@ export default function Step3({ onNext, onBack }) {
                 type="number"
                 id="honestyInput"
                 min={0}
-                max={100}
                 step={1}
                 value={honestyInput}
                 onChange={(e) => setHonestyInput(e.target.value)}
-                onKeyDown={(e) => e.preventDefault()} // empêche la frappe clavier
-                onPaste={(e) => e.preventDefault()} // empêche le copier/coller
-                onDrop={(e) => e.preventDefault()} // empêche le glisser-déposer
+                onKeyDown={(e) => e.preventDefault()} // bloque frappe clavier
+                onPaste={(e) => e.preventDefault()}
+                onDrop={(e) => e.preventDefault()}
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-customOrange"
               />
+              {honestyInput > 100 && (
+                <p className="text-sm text-red-600 mt-1">
+                  🤥 Personne n’est honnête à plus de 100%. Soyez raisonnable.
+                </p>
+              )}
             </div>
           )}
         </fieldset>
       ))}
 
       {/* Slider question */}
-      <div className="mb-6">
+      <div className="mb-6" onMouseMove={handleMouseMove}>
         <label
           htmlFor="honesty"
           className="block mb-2 font-semibold select-none"
@@ -203,19 +233,21 @@ export default function Step3({ onNext, onBack }) {
           type="range"
           min="0"
           max="100"
-          value={sliderValue}
-          onChange={(e) => {
-            setSliderValue(e.target.value);
-            setSliderReleased(false);
-          }}
+          value={sliderValue > 100 ? 100 : sliderValue}
+          onChange={handleSliderChange}
           onMouseUp={() => setSliderReleased(true)}
           onTouchEnd={() => setSliderReleased(true)}
           className="w-full cursor-pointer"
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={sliderValue}
+          aria-valuenow={sliderValue > 100 ? 100 : sliderValue}
           aria-label="Niveau d'honnêteté"
         />
+        {sliderReleased && sliderValue > 100 && (
+          <p className="mt-1 text-sm text-red-600 select-none italic">
+            🤯 Trop d’honnêteté tue l’honnêteté ?
+          </p>
+        )}
         {sliderReleased && sliderValue < 100 && (
           <p className="mt-1 text-sm text-gray-600 select-none italic">
             {sliderValue} ??? 😏 J’espère que vous n’avez pas choisi "honnêteté"
