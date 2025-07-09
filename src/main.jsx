@@ -4,8 +4,4 @@ import RouterComponent from "./pages/router.jsx";
 
 import "./index.css";
 
-createRoot(document.getElementById("root")).render(
-  <RouterComponent>
-    <App />
-  </RouterComponent>
-);
+createRoot(document.getElementById("root")).render(<RouterComponent />);

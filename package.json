@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "tailwind:init": "npx tailwindcss init",
     "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.12",

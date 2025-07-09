@@ -5,7 +5,7 @@ import Error from "./Error";
 
 const RouterComponent = () => {
   return (
-    <Router>
+    <Router basename="/utilisabilite">
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
