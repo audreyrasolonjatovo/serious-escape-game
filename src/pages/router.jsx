@@ -7,9 +7,9 @@ const RouterComponent = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/utilisabilite/" element={<App />} />
-        <Route path="/utilisabilite/login" element={<Login />} />
-        <Route path="/utilisabilite/notallowed" element={<Error />} />
+        <Route path="/" element={<App />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/notallowed" element={<Error />} />
       </Routes>
     </Router>
   );

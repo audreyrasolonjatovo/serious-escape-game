@@ -1,6 +1,4 @@
-import React from "react";
-
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Background from "../assets/Background";
 import Button from "../components/Button/Button";
@@ -8,8 +6,6 @@ import Button from "../components/Button/Button";
 import errorGif from "../assets/error.gif";
 
 export default function Error() {
-  const navigate = useNavigate();
-
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
       <Background className="absolute inset-0 w-full h-full object-cover" />

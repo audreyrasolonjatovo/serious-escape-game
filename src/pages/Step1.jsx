@@ -1,6 +1,8 @@
 import { useState } from "react";
+import TermsPopup from "./TermsPopup";
 
 export default function Step1({ onNext }) {
+  const [showTerms, setShowTerms] = useState(true);
   const [password, setPassword] = useState("Choisissez un mot de passe");
   const [email, setEmail] = useState("Votre adresse mail");
   const [checkboxChecked, setCheckboxChecked] = useState(true);
@@ -62,6 +64,10 @@ export default function Step1({ onNext }) {
     }
   }
 
+  if (showTerms) {
+    return <TermsPopup onClose={() => setShowTerms(false)} />;
+  }
+
   return (
     <div className="space-y-6 flex flex-col justify-center max-w-xl mx-auto">
       <p className="text-sm font-semibold text-gray-500">1/4</p>
@@ -121,9 +127,16 @@ export default function Step1({ onNext }) {
         >
           <p className="flex gap-1">
             Je n'accepte pas les{" "}
-            <span className="font-bold underline">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowTerms(true); // déclenche la pop-up
+              }}
+              className="font-bold underline text-blue-600 hover:text-blue-800"
+            >
               Conditions d'utilisation
-            </span>
+            </a>
           </p>
         </label>
       </div>
