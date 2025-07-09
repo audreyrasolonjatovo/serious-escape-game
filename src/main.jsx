@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
 import RouterComponent from "./pages/router.jsx";
 
 import "./index.css";

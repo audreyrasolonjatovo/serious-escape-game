@@ -7,15 +7,15 @@ export default function Step4() {
   const correctIndexes = [0, 1, 6, 7, 8]; // indexes des images de "glace"
 
   const images = [
-    { src: "glace4.png", alt: "Montagne" },
-    { src: "glace1.png", alt: "Glace dessert" },
-    { src: "hippo2.png", alt: "Plage" },
-    { src: "hippo3.png", alt: "Glace dessert" },
-    { src: "hippo4.png", alt: "Voiture" },
-    { src: "hippo.png", alt: "Glace dessert" },
-    { src: "glace2.jpg", alt: "Glace dessert" },
-    { src: "glace5.jpg", alt: "Voiture" },
-    { src: "glace3.png", alt: "Glace dessert" }
+    { src: "/utilisabilite/glace4.png", alt: "Montagne" },
+    { src: "/utilisabilite/glace1.png", alt: "Glace dessert" },
+    { src: "/utilisabilite/hippo2.png", alt: "Plage" },
+    { src: "/utilisabilite/hippo3.png", alt: "Glace dessert" },
+    { src: "/utilisabilite/hippo4.png", alt: "Voiture" },
+    { src: "/utilisabilite/hippo.png", alt: "Glace dessert" },
+    { src: "/utilisabilite/glace2.jpg", alt: "Glace dessert" },
+    { src: "/utilisabilite/glace5.jpg", alt: "Voiture" },
+    { src: "/utilisabilite/glace3.png", alt: "Glace dessert" },
   ];
 
   function toggleImage(index) {
