@@ -6,7 +6,7 @@ export default function Step2({ onNext, onBack }) {
   const [selectedQualities, setSelectedQualities] = useState([]);
   const [error, setError] = useState("");
 
-  const DEFAULT_IMAGE = "/utilisabilite/placeholder-avatar.png";
+  const DEFAULT_IMAGE = "placeholder-avatar.png";
 
   const QUALITIES = [
     "Curieux",
