@@ -7,7 +7,7 @@ import errorGif from "../assets/error.gif";
 
 export default function Error() {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-center overflow-hidden bg-[#24226A]">
       <Background className="absolute inset-0 w-full h-full object-cover" />
       <div className="relative z-10 bg-white rounded-2xl shadow-lg w-full max-w-md p-6 flex flex-col justify-between">
         <h1 className="text-7xl font-bold pt-5 text-customOrange">OOPS</h1>
